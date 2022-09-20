@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/19 18:03:03 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/20 16:22:16 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 int	main(int argc, char **argv, char **envp)
 {	
-	char c = argv[0][0];
+	t_data data;
+
 	if (argc == 1)
 	{
+		data.argv = argv;
+		data.env = envp;
 		write(1,"$",1);
 		while(1)
 			sleep(10);
 	}
-	return c;
+	else
+		printf("Too many arguments.");
+	return 0;
 }
