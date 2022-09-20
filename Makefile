@@ -6,11 +6,13 @@
 #    By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 18:47:42 by yogun             #+#    #+#              #
-#    Updated: 2022/09/18 19:02:03 by yogun            ###   ########.fr        #
+#    Updated: 2022/09/20 17:20:48 by yogun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
+
+LIBFTDIR = ./lib
 
 CC = gcc
 
@@ -22,11 +24,16 @@ SRC =	./src/minishell.c \
 
 OBJ = ${SRC:.c=.o}
 
+INCLIBFT = -L./lib -lft
+
+
 .c.o:
 	${CC} ${FLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}: ${OBJ}
-	${CC} ${OBJ} -o ${NAME}
+	@make -C $(LIBFTDIR)
+	@echo "Libft has been compiled\n" 
+	${CC} ${OBJ} ${INCLIBFT} -o ${NAME}
 	
 all: ${NAME}
 
@@ -34,9 +41,11 @@ bonus: all
 
 clean:
 	${RM} ${OBJ}
+	@cd $(LIBFTDIR) && $(MAKE) clean
 
 fclean: clean
 	${RM} ${NAME}
+	@cd $(LIBFTDIR) && $(MAKE) fclean
 
 re: fclean all
 
