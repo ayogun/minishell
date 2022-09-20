@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/20 17:04:00 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/20 17:06:58 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_env
 
 void 	tokenize_env(t_data *data);
 t_env	*ft_new_env(char *s);
-void 	tokenize_env(t_data *data)
+void 	tokenize_env(t_data *data);
 
 
 
