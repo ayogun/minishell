@@ -36,4 +36,6 @@ With Minishell project, we’ll be able to travel through time and come back to 
 ### tokenizer
 * [Lexical Analysis](https://en.wikipedia.org/wiki/Lexical_analysis)
 
+### additional
 
+* [Environmental Variables](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux)
