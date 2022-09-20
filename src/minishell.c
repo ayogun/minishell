@@ -6,13 +6,33 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/20 17:10:08 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/20 17:14:58 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_env	*ft_new_env(char *s)
+// This function frees the node from the memory.
+void	ft_free_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env;
+		if (env->value)
+			free(env->value);
+		env->value = NULL;
+		free(env->key);
+		env->key = NULL;
+		env = env->next;
+		tmp->next = NULL;
+		free(tmp);
+	}
+}
+
+// New node is being created under this function for env variable that has been sent.
+t_env	*ft_new_env(char *str)
 {
 	t_env	*new;
 	int		i;
@@ -21,10 +41,10 @@ t_env	*ft_new_env(char *s)
 	if (!new)
 		return (NULL);
 	i = 0;
-	while (s[i] && s[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
-	new->key = ft_substr(s, 0, i);
-	new->value = ft_strdup(s + i + 1);
+	new->key = ft_substr(str, 0, i);
+	new->value = ft_strdup(str + i + 1);
 	new->next = NULL;
 	return (new);
 }
