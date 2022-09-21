@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 10:23:17 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 12:20:18 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void tokenize_env(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
+	char *a = NULL;
 
 	if (argc == 1)
 	{
@@ -88,11 +89,13 @@ int	main(int argc, char **argv, char **envp)
 		data.env = envp;
 		//I will parse env variables 
 		tokenize_env(&data);
-		write(1,"$",1);
 		while(1)
 		{
-			printf("%s\n",readline("msh > "));
-			sleep(1);
+			a = readline("msh > ");
+			if(ft_strlen(a)>0)
+			{
+				add_history(a);
+			}
 		}
 			
 	}
