@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 13:44:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/08/05 14:25:47 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 12:24:03 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void	ft_putnbr_fd(int n, int fd);
 char	*ft_sub(char **ost, char **line);
 char	*ft_sub_2(char **ost, char **line, char **buf);
 char	*get_next_line(int fd);
+int		ft_strcmp(char *s1, char *s2)
 
 #endif
