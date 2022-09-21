@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/20 17:14:58 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 10:23:17 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ int	main(int argc, char **argv, char **envp)
 		tokenize_env(&data);
 		write(1,"$",1);
 		while(1)
-			sleep(10);
+		{
+			printf("%s\n",readline("msh > "));
+			sleep(1);
+		}
+			
 	}
 	else
 		printf("Too many arguments.");

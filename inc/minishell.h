@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/20 17:15:16 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 09:29:37 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include "../lib/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_data
 {
