@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 13:25:39 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 18:03:54 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void 	tokenize_env(t_data *data);
 t_env	*ft_new_env(char *str);
 void 	tokenize_env(t_data *data);
 void	ft_free_env(t_env *env);
+void 	printdir();
 
 #endif

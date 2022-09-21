@@ -6,12 +6,18 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 13:27:14 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 18:03:34 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+void printdir()
+{
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    printf("%s\n", cwd);
+}
 
 // This function frees the node from the memory.
 void	ft_free_env(t_env *env)
@@ -97,7 +103,9 @@ int	main(int argc, char **argv, char **envp)
 			if(ft_strlen(data.cmd_line)>0)
 				add_history(data.cmd_line);
 			if(!ft_strcmp(data.cmd_line , "exit"))
-				break;				
+				break;	
+			if(!ft_strcmp(data.cmd_line , "pwd"))		
+				printdir();	
 		}	
 	}
 	else
