@@ -6,11 +6,12 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 12:26:40 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 13:27:14 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 
 // This function frees the node from the memory.
 void	ft_free_env(t_env *env)
@@ -78,10 +79,11 @@ void tokenize_env(t_data *data)
 	}
 }
 
+
+
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
-	char *a = NULL;
 
 	if (argc == 1)
 	{
@@ -91,11 +93,11 @@ int	main(int argc, char **argv, char **envp)
 		tokenize_env(&data);
 		while(1)
 		{
-			a = readline("msh > ");
-			if(ft_strlen(a)>0)
-				add_history(a);
-			if(!ft_strcmp(a , "exit"))
-				break;
+			data.cmd_line = readline("miniSH > ");
+			if(ft_strlen(data.cmd_line)>0)
+				add_history(data.cmd_line);
+			if(!ft_strcmp(data.cmd_line , "exit"))
+				break;				
 		}	
 	}
 	else

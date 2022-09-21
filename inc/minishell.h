@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 09:29:37 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 13:25:39 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_data
 {
 	char	**argv;
 	char	**env;
+	char	*cmd_line;
 }				t_data;
 
 typedef struct s_env
