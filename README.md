@@ -39,3 +39,5 @@ With Minishell project, we’ll be able to travel through time and come back to 
 ### additional
 
 * [Environmental Variables](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux)
+
+* [Making your own Linux Shell in C](https://www.geeksforgeeks.org/making-linux-shell-c/)

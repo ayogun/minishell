@@ -6,12 +6,30 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 18:03:34 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 20:37:11 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+// Greeting shell during startup
+void init_shell()
+{
+    clear();
+    printf("\n\n\n\n******************"
+        "************************");
+    printf("\n\n\n\t****MINISHELL****");
+    printf("\n\n\t-USE AT YOUR OWN RISK-");
+    printf("\n\n\n\n*******************"
+        "***********************");
+    char* username = getenv("USER");
+    printf("\n\n\nUSER is: @%s", username);
+    printf("\n");
+    sleep(2);
+    clear();
+}
+
+// This function does exactly what pwd does.
 void printdir()
 {
     char cwd[1024];
@@ -93,6 +111,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 1)
 	{
+		init_shell();
 		data.argv = argv;
 		data.env = envp;
 		//I will parse env variables 
@@ -105,7 +124,9 @@ int	main(int argc, char **argv, char **envp)
 			if(!ft_strcmp(data.cmd_line , "exit"))
 				break;	
 			if(!ft_strcmp(data.cmd_line , "pwd"))		
-				printdir();	
+				printdir();
+			if(!ft_strncmp(data.cmd_line , "echo", 4))	
+				printf("%s\n",data.cmd_line+4);
 		}	
 	}
 	else

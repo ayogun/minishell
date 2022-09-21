@@ -6,12 +6,13 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 18:03:54 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/21 20:17:53 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define clear() printf("\033[H\033[J")
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -39,5 +40,7 @@ t_env	*ft_new_env(char *str);
 void 	tokenize_env(t_data *data);
 void	ft_free_env(t_env *env);
 void 	printdir();
+void 	init_shell();
+
 
 #endif
