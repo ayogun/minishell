@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 20:37:11 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/22 07:02:29 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	main(int argc, char **argv, char **envp)
 		while(1)
 		{
 			data.cmd_line = readline("miniSH > ");
+			data.cmd_line = ft_strtrim(data.cmd_line, " ");
 			if(ft_strlen(data.cmd_line)>0)
 				add_history(data.cmd_line);
 			if(!ft_strcmp(data.cmd_line , "exit"))
@@ -130,6 +131,10 @@ int	main(int argc, char **argv, char **envp)
 		}	
 	}
 	else
-		printf("Too many arguments.");
+	{
+		printf("Too many arguments.\n");
+	}
+
+		
 	return 0;
 }
