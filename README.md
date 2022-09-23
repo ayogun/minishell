@@ -2,6 +2,8 @@
 # minishell
 As beautiful as a shell
 
+Currently, I am developing this project alone. Although, [Batuhan Derya](https://github.com/bderya) will join me as project partner within few weeks if everything will go as planned.
+
 * [Introduction](#introduction)
 * [Usage](#usage)
 * [Builtins implemented](#builtins_implemented)
