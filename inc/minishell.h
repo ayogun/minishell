@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/21 20:17:53 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/24 16:46:23 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-void 	tokenize_env(t_data *data);
+t_env 	*tokenize_env(t_data *data);
 t_env	*ft_new_env(char *str);
-void 	tokenize_env(t_data *data);
 void	ft_free_env(t_env *env);
 void 	printdir();
 void 	init_shell();

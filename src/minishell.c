@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/22 07:02:29 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/24 16:57:39 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_env	*ft_new_env(char *str)
 }
 
 // Here I will take env and tokenize them with linked list.
-void tokenize_env(t_data *data)
+t_env *tokenize_env(t_data *data)
 {
 	t_env	*env;
 	t_env	*tmp;
@@ -101,6 +101,7 @@ void tokenize_env(t_data *data)
 		tmp2 = tmp;
 		i++;
 	}
+	return (env);
 }
 
 
@@ -108,6 +109,7 @@ void tokenize_env(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
+	t_env *env;
 
 	if (argc == 1)
 	{
@@ -115,7 +117,7 @@ int	main(int argc, char **argv, char **envp)
 		data.argv = argv;
 		data.env = envp;
 		//I will parse env variables 
-		tokenize_env(&data);
+		env = tokenize_env(&data);
 		while(1)
 		{
 			data.cmd_line = readline("miniSH > ");
@@ -124,10 +126,33 @@ int	main(int argc, char **argv, char **envp)
 				add_history(data.cmd_line);
 			if(!ft_strcmp(data.cmd_line , "exit"))
 				break;	
-			if(!ft_strcmp(data.cmd_line , "pwd"))		
+			else if(!ft_strcmp(data.cmd_line , "pwd"))		
 				printdir();
-			if(!ft_strncmp(data.cmd_line , "echo", 4))	
+			else if(!ft_strncmp(data.cmd_line , "echo", 4))	
 				printf("%s\n",data.cmd_line+4);
+			else if (!ft_strncmp(data.cmd_line, "cd", 2))
+			{
+				// according to rest of the cmd_line chdir function will work
+				//chdir("some dir");
+				printdir();
+			}
+			else if (!ft_strncmp(data.cmd_line, "env", 3))
+			{
+				while(env)
+				{
+					printf("%s", env->key);
+					printf("=%s\n",env->value);
+					env = env->next;
+				}
+			}
+			else if (!ft_strncmp(data.cmd_line, "export", 6))
+			{
+				printf("export will be here\n");
+			}
+			else if (!ft_strncmp(data.cmd_line, "unset", 5))
+			{
+				printf("unset will be here\n");
+			}
 		}	
 	}
 	else
