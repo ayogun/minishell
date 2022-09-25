@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/25 09:35:23 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/25 19:55:46 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void init_shell()
     char* username = getenv("USER");
     printf("\n\n\nUSER is: @%s", username);
     printf("\n");
-    sleep(2);
+    sleep(1);
     clear();
 }
 
@@ -107,11 +107,11 @@ t_env *tokenize_env(t_data *data)
 void	ft_export(char *s, t_data *a , t_env *env)
 {
 	a->exit_status = 0;
-	while (env)
-	{
+	if (!env)
+		return (NULL);
+	while (env->next)
 		env = env->next;
-	}
-	env = ft_new_env(s);
+	env->next = ft_new_env(ft_strtrim(s, " "));	
 }
 
 int	main(int argc, char **argv, char **envp)
