@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/24 16:57:39 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/25 09:35:23 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,31 @@ t_env *tokenize_env(t_data *data)
 	return (env);
 }
 
-
+void	ft_export(char *s, t_data *a , t_env *env)
+{
+	a->exit_status = 0;
+	while (env)
+	{
+		env = env->next;
+	}
+	env = ft_new_env(s);
+}
 
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
 	t_env *env;
+	t_env *tmp;
 
 	if (argc == 1)
 	{
 		init_shell();
 		data.argv = argv;
 		data.env = envp;
+		data.exit_status = 0;
 		//I will parse env variables 
 		env = tokenize_env(&data);
+		tmp = env;
 		while(1)
 		{
 			data.cmd_line = readline("miniSH > ");
@@ -144,10 +155,11 @@ int	main(int argc, char **argv, char **envp)
 					printf("=%s\n",env->value);
 					env = env->next;
 				}
+				env = tmp;
 			}
 			else if (!ft_strncmp(data.cmd_line, "export", 6))
 			{
-				printf("export will be here\n");
+				ft_export(data.cmd_line+6, &data, env);
 			}
 			else if (!ft_strncmp(data.cmd_line, "unset", 5))
 			{
