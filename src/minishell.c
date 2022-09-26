@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/26 18:17:10 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 18:28:04 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ t_env *tokenize_env(t_data *data)
 	return (env);
 }
 
+// export function but I wrote it very quick.
+// We should check it later if I checked all edge cases
 void	ft_export(char *s, t_data *a , t_env *env)
 {
 	a->exit_status = 0;
@@ -121,6 +123,8 @@ void	ft_export(char *s, t_data *a , t_env *env)
 	env->next = ft_new_env(ft_strtrim(s, " "));	
 }
 
+// unset function, I think fully functional but 
+// I should check later whether I handle all errors
 void	ft_unset(char *s, t_data *a , t_env *env)
 {
 	t_env *tmp;
@@ -138,6 +142,8 @@ void	ft_unset(char *s, t_data *a , t_env *env)
 	}
 }
 
+// Straightforward echo function
+// But there is no " and ' sign handling
 void ft_echo(char *s, t_data data)
 {
 	int	i;
@@ -168,10 +174,8 @@ void ft_echo(char *s, t_data data)
 		write(1, "\n", 1);
 }
 
-
-
-
-
+// Check later if I handled all the cases. 
+// With this function, I renew my OLDPWD and PWD
 void	ft_cd_change_env(t_env *new, t_env *old)
 {
 	if (!new)
@@ -198,6 +202,7 @@ void	ft_cd_change_env(t_env *new, t_env *old)
 	}
 }
 
+// This function change my directory and send ENV to next ft
 void	ft_cd_sub(char *s, t_data a, t_env *new)
 {
 	t_env	*old;
@@ -216,6 +221,8 @@ void	ft_cd_sub(char *s, t_data a, t_env *new)
 	ft_cd_change_env(new, old);
 }
 
+// This function handles error, "cd" case and normal case.
+// In normal case, it delivers the work to ft_cd_sub function.
 void	ft_cd(char *s, t_data a, t_env *env)
 {
 	a.exit_status = 0;
@@ -243,7 +250,6 @@ void	ft_cd(char *s, t_data a, t_env *env)
 		ft_cd_sub(s, a, env);
 	}
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {	
