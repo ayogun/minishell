@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/26 18:41:45 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 18:52:19 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,42 +251,9 @@ void	ft_cd(char *s, t_data a, t_env *env)
 	}
 }
 
-void	ft_env_sub(char *s, t_data *a)
-{
-	int			i;
-	char		*tmp;
-	struct stat	path_stat;
-
-	i = 0;
-	while (s[i] && s[i] != ' ')
-		i++;
-	tmp = ft_substr(s, 0, i);
-	stat(tmp, &path_stat);
-	if (S_ISDIR(path_stat.st_mode) || access(tmp, F_OK) == 0)
-	{
-		a->exit_status = 126;
-		write(2, "env: ", 5);
-		write(2, tmp, 5);
-		write(2, ": Permission denied\n", 20);
-	}
-	else
-	{
-		a->exit_status = 127;
-		write(2, "env: ", 5);
-		write(2, tmp, 5);
-		write(2, ": No such file or directory\n", 28);
-	}
-	free(tmp);
-}
-
 void	ft_env(char *s, t_data *a, t_env *env)
 {
 	a->exit_status = 0;
-	if (*s++)
-	{
-		ft_env_sub(s, a);
-		return ;
-	}
 	while (env)
 	{
 		if (env->key && env->value)
