@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/26 15:35:46 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 18:17:10 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,83 @@ void ft_echo(char *s, t_data data)
 		write(1, "\n", 1);
 }
 
+
+
+
+
+void	ft_cd_change_env(t_env *new, t_env *old)
+{
+	if (!new)
+	{
+		if (old)
+		{
+			if (old->value)
+				free(old->value);
+			old->value = NULL;
+		}
+		return ;
+	}
+	else
+	{
+		if (old)
+		{
+			if (old->value)
+				free(old->value);
+			old->value = new->value;
+		}
+		if (!old && new->value)
+			free(new->value);
+		new->value = getcwd(NULL, 0);
+	}
+}
+
+void	ft_cd_sub(char *s, t_data a, t_env *new)
+{
+	t_env	*old;
+
+	old = new;
+	if (chdir(s) != 0)
+	{
+		a.exit_status = 1;
+		perror(s);
+		return ;
+	}
+	while (old && ft_strncmp("OLDPWD", old->key, 6))
+		old = old->next;
+	while (new && ft_strncmp("PWD", new->key, 6))
+		new = new->next;
+	ft_cd_change_env(new, old);
+}
+
+void	ft_cd(char *s, t_data a, t_env *env)
+{
+	a.exit_status = 0;
+	if (!s || *s == '\0')
+	{
+		while (env && ft_strncmp(env->key, "HOME", 4))
+			env = env->next;
+		if (env == NULL)
+		{
+			a.exit_status = 1;
+			write(2, "cd: HOME not set\n", 17);
+		}
+		else
+		{
+			if (chdir(env->value) != 0)
+			{
+				perror("cd");
+				a.exit_status = 1;
+			}
+		}
+	}
+	else
+	{
+		s++;
+		ft_cd_sub(s, a, env);
+	}
+}
+
+
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
@@ -199,7 +276,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				// according to rest of the cmd_line chdir function will work
 				//chdir("some dir");
-				//
+				ft_cd(data.cmd_line + 2, data, env);
 			}
 			else if (!ft_strncmp(data.cmd_line, "env", 3))
 			{
