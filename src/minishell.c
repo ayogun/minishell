@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/25 20:13:08 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 18:52:19 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,20 @@ void init_shell()
 }
 
 // This function does exactly what pwd does.
-void printdir()
+void ft_pwd(t_data data)
 {
-    char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
-    printf("%s\n", cwd);
+	char	*s;
+
+	data.exit_status = 0;
+	s = getcwd(NULL, 0);
+	if (!s)
+	{
+		data.exit_status = 1;
+		perror("pwd");
+		return ;
+	}
+	ft_putstr_fd(s, 1);
+	write(1, "\n", 1);
 }
 
 // This function frees the node from the memory.
@@ -104,6 +113,8 @@ t_env *tokenize_env(t_data *data)
 	return (env);
 }
 
+// export function but I wrote it very quick.
+// We should check it later if I checked all edge cases
 void	ft_export(char *s, t_data *a , t_env *env)
 {
 	a->exit_status = 0;
@@ -112,6 +123,8 @@ void	ft_export(char *s, t_data *a , t_env *env)
 	env->next = ft_new_env(ft_strtrim(s, " "));	
 }
 
+// unset function, I think fully functional but 
+// I should check later whether I handle all errors
 void	ft_unset(char *s, t_data *a , t_env *env)
 {
 	t_env *tmp;
@@ -126,6 +139,131 @@ void	ft_unset(char *s, t_data *a , t_env *env)
 			tmp->next = env->next;
 			ft_free_env(env);
 		}
+	}
+}
+
+// Straightforward echo function
+// But there is no " and ' sign handling
+void ft_echo(char *s, t_data data)
+{
+	int	i;
+	int	flag;
+
+	data.exit_status = 0;
+	flag = 0;
+	if (s && *s == ' ')
+		s++;
+	while (s[0] && s[0] == '-' && s[1] == 'n')
+	{
+		i = 1;
+		while (*s && s[i] == 'n')
+			i++;
+		if (s[i] == ' ' || !s[i])
+		{
+			flag = 1;
+			if (s[i])
+				i += 1;
+			s += i;
+		}
+		else
+			break ;
+	}
+	// Here we should add a function to handle double and single quotes
+	ft_putstr_fd(s, 1);
+	if (flag == 0)
+		write(1, "\n", 1);
+}
+
+// Check later if I handled all the cases. 
+// With this function, I renew my OLDPWD and PWD
+void	ft_cd_change_env(t_env *new, t_env *old)
+{
+	if (!new)
+	{
+		if (old)
+		{
+			if (old->value)
+				free(old->value);
+			old->value = NULL;
+		}
+		return ;
+	}
+	else
+	{
+		if (old)
+		{
+			if (old->value)
+				free(old->value);
+			old->value = new->value;
+		}
+		if (!old && new->value)
+			free(new->value);
+		new->value = getcwd(NULL, 0);
+	}
+}
+
+// This function change my directory and send ENV to next ft
+void	ft_cd_sub(char *s, t_data a, t_env *new)
+{
+	t_env	*old;
+
+	old = new;
+	if (chdir(s) != 0)
+	{
+		a.exit_status = 1;
+		perror(s);
+		return ;
+	}
+	while (old && ft_strncmp("OLDPWD", old->key, 6))
+		old = old->next;
+	while (new && ft_strncmp("PWD", new->key, 6))
+		new = new->next;
+	ft_cd_change_env(new, old);
+}
+
+// This function handles error, "cd" case and normal case.
+// In normal case, it delivers the work to ft_cd_sub function.
+void	ft_cd(char *s, t_data a, t_env *env)
+{
+	a.exit_status = 0;
+	if (!s || *s == '\0')
+	{
+		while (env && ft_strncmp(env->key, "HOME", 4))
+			env = env->next;
+		if (env == NULL)
+		{
+			a.exit_status = 1;
+			write(2, "cd: HOME not set\n", 17);
+		}
+		else
+		{
+			if (chdir(env->value) != 0)
+			{
+				perror("cd");
+				a.exit_status = 1;
+			}
+		}
+	}
+	else
+	{
+		s++;
+		ft_cd_sub(s, a, env);
+	}
+}
+
+void	ft_env(char *s, t_data *a, t_env *env)
+{
+	a->exit_status = 0;
+	while (env)
+	{
+		if (env->key && env->value)
+		{
+			write(1, env->key, ft_strlen(env->key));
+			write(1, "=", 1);
+			write(1, env->value, ft_strlen(env->value));
+			write(1, "\n", 1);
+		}
+		env = env->next;
 	}
 }
 
@@ -153,41 +291,22 @@ int	main(int argc, char **argv, char **envp)
 			if(!ft_strcmp(data.cmd_line , "exit"))
 				break;	
 			else if(!ft_strcmp(data.cmd_line , "pwd"))		
-				printdir();
-			else if(!ft_strncmp(data.cmd_line , "echo", 4))	
-				printf("%s\n",data.cmd_line+4);
+				ft_pwd(data);
+			else if(!ft_strncmp(data.cmd_line , "echo", 4))
+				ft_echo(data.cmd_line+4,data);
 			else if (!ft_strncmp(data.cmd_line, "cd", 2))
-			{
-				// according to rest of the cmd_line chdir function will work
-				//chdir("some dir");
-				printdir();
-			}
+				ft_cd(data.cmd_line + 2, data, env);
 			else if (!ft_strncmp(data.cmd_line, "env", 3))
-			{
-				while(env)
-				{
-					printf("%s", env->key);
-					printf("=%s\n",env->value);
-					env = env->next;
-				}
-				env = tmp;
-			}
+				ft_env(data.cmd_line+3 , &data , env);
 			else if (!ft_strncmp(data.cmd_line, "export", 6))
-			{
 				ft_export(data.cmd_line+6, &data, env);
-			}
 			else if (!ft_strncmp(data.cmd_line, "unset", 5))
-			{
-				printf("unset will be here\n");
 				ft_unset(data.cmd_line+5, &data, env);
-			}
 		}	
 	}
 	else
 	{
 		printf("Too many arguments.\n");
 	}
-
-		
 	return 0;
 }
