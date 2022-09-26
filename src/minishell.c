@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/26 15:30:01 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 15:35:46 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,20 @@ void init_shell()
 }
 
 // This function does exactly what pwd does.
-void printdir()
+void ft_pwd(t_data data)
 {
-    char cwd[1024];
-    getcwd(cwd, sizeof(cwd));
-    printf("%s\n", cwd);
+	char	*s;
+
+	data.exit_status = 0;
+	s = getcwd(NULL, 0);
+	if (!s)
+	{
+		data.exit_status = 1;
+		perror("pwd");
+		return ;
+	}
+	ft_putstr_fd(s, 1);
+	write(1, "\n", 1);
 }
 
 // This function frees the node from the memory.
@@ -183,14 +192,14 @@ int	main(int argc, char **argv, char **envp)
 			if(!ft_strcmp(data.cmd_line , "exit"))
 				break;	
 			else if(!ft_strcmp(data.cmd_line , "pwd"))		
-				printdir();
+				ft_pwd(data);
 			else if(!ft_strncmp(data.cmd_line , "echo", 4))
 				ft_echo(data.cmd_line+4,data);
 			else if (!ft_strncmp(data.cmd_line, "cd", 2))
 			{
 				// according to rest of the cmd_line chdir function will work
 				//chdir("some dir");
-				printdir();
+				//
 			}
 			else if (!ft_strncmp(data.cmd_line, "env", 3))
 			{
