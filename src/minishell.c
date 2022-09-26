@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/25 20:13:08 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/26 15:30:01 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,36 @@ void	ft_unset(char *s, t_data *a , t_env *env)
 	}
 }
 
+void ft_echo(char *s, t_data data)
+{
+	int	i;
+	int	flag;
+
+	data.exit_status = 0;
+	flag = 0;
+	if (s && *s == ' ')
+		s++;
+	while (s[0] && s[0] == '-' && s[1] == 'n')
+	{
+		i = 1;
+		while (*s && s[i] == 'n')
+			i++;
+		if (s[i] == ' ' || !s[i])
+		{
+			flag = 1;
+			if (s[i])
+				i += 1;
+			s += i;
+		}
+		else
+			break ;
+	}
+	// Here we should add a function to handle double and single quotes
+	ft_putstr_fd(s, 1);
+	if (flag == 0)
+		write(1, "\n", 1);
+}
+
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
@@ -154,8 +184,8 @@ int	main(int argc, char **argv, char **envp)
 				break;	
 			else if(!ft_strcmp(data.cmd_line , "pwd"))		
 				printdir();
-			else if(!ft_strncmp(data.cmd_line , "echo", 4))	
-				printf("%s\n",data.cmd_line+4);
+			else if(!ft_strncmp(data.cmd_line , "echo", 4))
+				ft_echo(data.cmd_line+4,data);
 			else if (!ft_strncmp(data.cmd_line, "cd", 2))
 			{
 				// according to rest of the cmd_line chdir function will work
