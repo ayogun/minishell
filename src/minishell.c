@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/25 09:35:23 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/25 20:13:08 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void init_shell()
     char* username = getenv("USER");
     printf("\n\n\nUSER is: @%s", username);
     printf("\n");
-    sleep(2);
+    sleep(1);
     clear();
 }
 
@@ -107,11 +107,26 @@ t_env *tokenize_env(t_data *data)
 void	ft_export(char *s, t_data *a , t_env *env)
 {
 	a->exit_status = 0;
-	while (env)
-	{
+	while (env->next)
 		env = env->next;
+	env->next = ft_new_env(ft_strtrim(s, " "));	
+}
+
+void	ft_unset(char *s, t_data *a , t_env *env)
+{
+	t_env *tmp;
+	
+	a->exit_status = 0;
+	while (env->next)
+	{
+		tmp = env;
+		env = env->next;
+		if(!ft_strcmp(env->key , ft_strtrim(s," ")))
+		{
+			tmp->next = env->next;
+			ft_free_env(env);
+		}
 	}
-	env = ft_new_env(s);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -164,6 +179,7 @@ int	main(int argc, char **argv, char **envp)
 			else if (!ft_strncmp(data.cmd_line, "unset", 5))
 			{
 				printf("unset will be here\n");
+				ft_unset(data.cmd_line+5, &data, env);
 			}
 		}	
 	}
