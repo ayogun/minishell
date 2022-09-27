@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/27 14:52:09 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/27 15:40:33 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ void	ft_env(char *s, t_data *a, t_env *env)
 	a->exit_status = 0;
 	if (*s++)
 	{
-		//ft_env_sub(s, a);
+		write(2, "Wrong input!\n", 13);
 		return ;
 	}
 	while (env)
@@ -313,7 +313,7 @@ int	ft_exit(char *s)
 
 void ft_free()
 {
-	
+	// I will free somethings to avoid leaks
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -356,6 +356,7 @@ int	main(int argc, char **argv, char **envp)
 			free(data.cmd_line);
 			if (exit_code != -1)
 			{
+				//system("leaks minishell");
 				// Here I will free the things
 				ft_free();
 				exit(exit_code);
@@ -366,5 +367,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("Too many arguments.\n");
 	}
+	
 	return 0;
 }
