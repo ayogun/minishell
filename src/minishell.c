@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/26 18:52:19 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/27 14:52:09 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void init_shell()
     char* username = getenv("USER");
     printf("\n\n\nUSER is: @%s", username);
     printf("\n");
-    sleep(1);
+    usleep(700000);
     clear();
 }
 
@@ -251,9 +251,15 @@ void	ft_cd(char *s, t_data a, t_env *env)
 	}
 }
 
+// print out enviroment variables
 void	ft_env(char *s, t_data *a, t_env *env)
 {
 	a->exit_status = 0;
+	if (*s++)
+	{
+		//ft_env_sub(s, a);
+		return ;
+	}
 	while (env)
 	{
 		if (env->key && env->value)
@@ -267,29 +273,74 @@ void	ft_env(char *s, t_data *a, t_env *env)
 	}
 }
 
+// rest of the exit function. Splitted for norminette
+int	ft_exit_sub(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isdigit(s[i]))
+		i++;
+	if (s[i])
+	{
+		write(2, "exit: ", 6);
+		write(2, s, ft_strlen(s));
+		write(2, ": numeric argument required\n", 28);
+		return (255);
+	}
+	i = ft_atoi(s);
+	return (i % 256);
+}
+
+// exiting from shell with proper error code and message
+int	ft_exit(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!*s++)
+		return (0);
+	while (s[i] && s[i] != ' ')
+		i++;
+	
+	if (s[i])
+	{
+		write(2, "exit: too many arguments\n", 25);
+		return (128);
+	}
+	return (ft_exit_sub(s));
+}
+
+void ft_free()
+{
+	
+}
+
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
 	t_env *env;
-	t_env *tmp;
-
+	//t_env *tmp;
+	int exit_code;
+	
 	if (argc == 1)
-	{
+	{	
 		init_shell();
 		data.argv = argv;
 		data.env = envp;
 		data.exit_status = 0;
+		exit_code = -1;
 		//I will parse env variables 
 		env = tokenize_env(&data);
-		tmp = env;
+		//tmp = env;
 		while(1)
 		{
 			data.cmd_line = readline("miniSH > ");
 			data.cmd_line = ft_strtrim(data.cmd_line, " ");
 			if(ft_strlen(data.cmd_line)>0)
 				add_history(data.cmd_line);
-			if(!ft_strcmp(data.cmd_line , "exit"))
-				break;	
+			if(!ft_strncmp(data.cmd_line , "exit" , 4))
+				exit_code = ft_exit(data.cmd_line+4);
 			else if(!ft_strcmp(data.cmd_line , "pwd"))		
 				ft_pwd(data);
 			else if(!ft_strncmp(data.cmd_line , "echo", 4))
@@ -302,6 +353,13 @@ int	main(int argc, char **argv, char **envp)
 				ft_export(data.cmd_line+6, &data, env);
 			else if (!ft_strncmp(data.cmd_line, "unset", 5))
 				ft_unset(data.cmd_line+5, &data, env);
+			free(data.cmd_line);
+			if (exit_code != -1)
+			{
+				// Here I will free the things
+				ft_free();
+				exit(exit_code);
+			}
 		}	
 	}
 	else
