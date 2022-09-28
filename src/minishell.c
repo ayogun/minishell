@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/27 14:52:09 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/27 17:26:20 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ void	ft_env(char *s, t_data *a, t_env *env)
 	a->exit_status = 0;
 	if (*s++)
 	{
-		//ft_env_sub(s, a);
+		write(2, "Wrong input!\n", 13);
 		return ;
 	}
 	while (env)
@@ -311,9 +311,17 @@ int	ft_exit(char *s)
 	return (ft_exit_sub(s));
 }
 
-void ft_free()
+// I am not sure if it works fully functional
+void ft_free(t_data a , t_env *env)
 {
-	
+	a.cmd_line = NULL;
+	if (a.env)
+	{
+		rl_on_new_line();
+		rl_clear_history();
+		a.env = NULL;
+		ft_free_env(env);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -357,7 +365,8 @@ int	main(int argc, char **argv, char **envp)
 			if (exit_code != -1)
 			{
 				// Here I will free the things
-				ft_free();
+				ft_free(data , env);
+				//system("leaks minishell");
 				exit(exit_code);
 			}
 		}	
@@ -366,5 +375,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("Too many arguments.\n");
 	}
+	
 	return 0;
 }
