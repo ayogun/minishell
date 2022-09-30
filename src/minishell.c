@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/27 17:26:20 by yogun            ###   ########.fr       */
+/*   Updated: 2022/09/28 18:57:04 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,7 +343,7 @@ int	main(int argc, char **argv, char **envp)
 		//tmp = env;
 		while(1)
 		{
-			data.cmd_line = readline("miniSH > ");
+			data.cmd_line = readline("minishell > ");
 			data.cmd_line = ft_strtrim(data.cmd_line, " ");
 			if(ft_strlen(data.cmd_line)>0)
 				add_history(data.cmd_line);
