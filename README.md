@@ -45,3 +45,5 @@ With Minishell project, we’ll be able to travel through time and come back to 
 * [Making your own Linux Shell in C](https://www.geeksforgeeks.org/making-linux-shell-c/)
 
 * [A loooot of resources](https://www.notion.so/Minishell-Materials-7bbd45a806e04395ab578ca3f805806c)
+
+* [Shell Comand Language](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html)
