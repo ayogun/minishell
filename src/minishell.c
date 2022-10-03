@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/09/28 18:57:04 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/01 18:07:23 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,21 +323,30 @@ void ft_free(t_data a , t_env *env)
 		ft_free_env(env);
 	}
 }
+// This function is not fully functional. Should be expanded and ellaborated
+void ft_last_exit(t_data *a)
+{
+	char *str;
+
+	str = ft_itoa(a->exit_status);
+	write(2 , str , ft_strlen(str));
+	write(2 , "\n" , 1);
+	
+}
 
 int	main(int argc, char **argv, char **envp)
 {	
 	t_data data;
 	t_env *env;
 	//t_env *tmp;
-	int exit_code;
 	
 	if (argc == 1)
 	{	
 		init_shell();
 		data.argv = argv;
 		data.env = envp;
-		data.exit_status = 0;
-		exit_code = -1;
+		data.exit_status = -1;
+		
 		//I will parse env variables 
 		env = tokenize_env(&data);
 		//tmp = env;
@@ -345,10 +354,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			data.cmd_line = readline("minishell > ");
 			data.cmd_line = ft_strtrim(data.cmd_line, " ");
-			if(ft_strlen(data.cmd_line)>0)
+			// eğer yazılan satır boş bir satır değilse at baba memoriye
+			if(data.cmd_line && *data.cmd_line)
 				add_history(data.cmd_line);
 			if(!ft_strncmp(data.cmd_line , "exit" , 4))
-				exit_code = ft_exit(data.cmd_line+4);
+				data.exit_status = ft_exit(data.cmd_line+4);
 			else if(!ft_strcmp(data.cmd_line , "pwd"))		
 				ft_pwd(data);
 			else if(!ft_strncmp(data.cmd_line , "echo", 4))
@@ -361,13 +371,15 @@ int	main(int argc, char **argv, char **envp)
 				ft_export(data.cmd_line+6, &data, env);
 			else if (!ft_strncmp(data.cmd_line, "unset", 5))
 				ft_unset(data.cmd_line+5, &data, env);
+			else if (!ft_strncmp(data.cmd_line, "$?", 2))
+				ft_last_exit(&data);
 			free(data.cmd_line);
-			if (exit_code != -1)
+			if (data.exit_status != -1)
 			{
 				// Here I will free the things
 				ft_free(data , env);
 				//system("leaks minishell");
-				exit(exit_code);
+				exit(data.exit_status);
 			}
 		}	
 	}
