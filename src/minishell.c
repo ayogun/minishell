@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/12 17:33:05 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/12 17:36:06 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,7 +362,7 @@ int	main(int argc, char **argv, char **envp)
 			if(data.cmd_line && *data.cmd_line)
 				add_history(data.cmd_line);
 			
-			ft_init_tokens(data, in, out);
+			ft_init_tokens(&data, in, out);
 			
 			if(!ft_strncmp(data.cmd_line , "exit" , 4))
 				data.exit_status = ft_exit(data.cmd_line+4);
