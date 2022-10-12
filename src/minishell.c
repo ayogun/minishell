@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/01 18:07:23 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/12 17:33:05 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_env	*ft_new_env(char *str)
 }
 
 // Here I will take env and tokenize them with linked list.
-t_env *tokenize_env(t_data *data)
+t_env *list_env(t_data *data)
 {
 	t_env	*env;
 	t_env	*tmp;
@@ -339,6 +339,8 @@ int	main(int argc, char **argv, char **envp)
 	t_data data;
 	t_env *env;
 	//t_env *tmp;
+	int	in;
+	int	out;
 	
 	if (argc == 1)
 	{	
@@ -346,9 +348,11 @@ int	main(int argc, char **argv, char **envp)
 		data.argv = argv;
 		data.env = envp;
 		data.exit_status = -1;
+		in = dup(0);
+		out = dup(1);
 		
 		//I will parse env variables 
-		env = tokenize_env(&data);
+		env = list_env(&data);
 		//tmp = env;
 		while(1)
 		{
@@ -357,9 +361,12 @@ int	main(int argc, char **argv, char **envp)
 			// eğer yazılan satır boş bir satır değilse at baba memoriye
 			if(data.cmd_line && *data.cmd_line)
 				add_history(data.cmd_line);
+			
+			ft_init_tokens(data, in, out);
+			
 			if(!ft_strncmp(data.cmd_line , "exit" , 4))
 				data.exit_status = ft_exit(data.cmd_line+4);
-			else if(!ft_strcmp(data.cmd_line , "pwd"))		
+			else if(!ft_strcmp(data.cmd_line , "pwd"))
 				ft_pwd(data);
 			else if(!ft_strncmp(data.cmd_line , "echo", 4))
 				ft_echo(data.cmd_line+4,data);
