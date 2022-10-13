@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:45:59 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/12 17:36:06 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/13 11:07:21 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,6 @@ void ft_pwd(t_data data)
 	write(1, "\n", 1);
 }
 
-// This function frees the node from the memory.
-void	ft_free_env(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env)
-	{
-		tmp = env;
-		if (env->value)
-			free(env->value);
-		env->value = NULL;
-		free(env->key);
-		env->key = NULL;
-		env = env->next;
-		tmp->next = NULL;
-		free(tmp);
-	}
-}
-
 // New node is being created under this function for env variable that has been sent.
 t_env	*ft_new_env(char *str)
 {
@@ -94,9 +75,9 @@ t_env *list_env(t_data *data)
 	i = 0;
 	env = NULL;
 	tmp2 = NULL;
-	while (data->env[i])
+	while (data->envdb[i])
 	{
-		tmp = ft_new_env(data->env[i]);
+		tmp = ft_new_env(data->envdb[i]);
 		if (!tmp)
 		{
 			ft_free_env(env);
@@ -311,18 +292,7 @@ int	ft_exit(char *s)
 	return (ft_exit_sub(s));
 }
 
-// I am not sure if it works fully functional
-void ft_free(t_data a , t_env *env)
-{
-	a.cmd_line = NULL;
-	if (a.env)
-	{
-		rl_on_new_line();
-		rl_clear_history();
-		a.env = NULL;
-		ft_free_env(env);
-	}
-}
+
 // This function is not fully functional. Should be expanded and ellaborated
 void ft_last_exit(t_data *a)
 {
@@ -345,8 +315,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{	
 		init_shell();
-		data.argv = argv;
-		data.env = envp;
+		data.argv = argv[0];
+		data.envdb = envp;
 		data.exit_status = -1;
 		in = dup(0);
 		out = dup(1);
@@ -384,7 +354,7 @@ int	main(int argc, char **argv, char **envp)
 			if (data.exit_status != -1)
 			{
 				// Here I will free the things
-				ft_free(data , env);
+				ft_free(&data , 0);
 				//system("leaks minishell");
 				exit(data.exit_status);
 			}
