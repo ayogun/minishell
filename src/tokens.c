@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:15:35 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/12 21:22:19 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/13 10:54:31 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,34 @@ void	ft_new_token(t_data *a, char c, char *s, int i)
 				free(s);
 			tmp2->content = tmp;
 		}
+	}
+}
+
+void	ft_new_token_sub(t_data *a, char c, char *s, int i)
+{
+	t_token	*new;
+	t_token	*tmp;
+
+	if (!s && c == 'W')
+		return ;
+	new = malloc(sizeof(t_token));
+	if (!new)
+	{
+		ft_free(a, 0);
+		write(2, "Error: failed to allocate memory!\n", 34);
+		exit(EXIT_FAILURE);
+	}
+	new->i = i;
+	new->c = c;
+	new->content = s;
+	new->next = NULL;
+	if (!a->token)
+		a->token = new;
+	else
+	{
+		tmp = a->token;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
 }

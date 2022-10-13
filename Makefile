@@ -6,7 +6,7 @@
 #    By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 18:47:42 by yogun             #+#    #+#              #
-#    Updated: 2022/09/21 10:46:31 by yogun            ###   ########.fr        #
+#    Updated: 2022/10/13 11:08:01 by yogun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,11 @@ RM = rm -f
 FLAGS = -Wall -Wextra -Werror
 
 SRC =	./src/minishell.c \
+		./src/tokens.c \
+		./src/tokens2.c \
+		./src/init_tokens.c \
+		./src/free_me.c \
+
 
 OBJ = ${SRC:.c=.o}
 
