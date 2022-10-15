@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:16:32 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/13 10:19:27 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/15 21:28:59 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ int	ft_token_dquote(t_data *a, int i)
 		a->exit_status = 258;
 		ft_free(a, 1);
 		write(2, "syntax error, missing \"\n", 24);
+		return (-1);
+	}
+	ft_new_token(a, 'W', ft_substr(a->cmd_line, i, j), 1);
+	return (i + j + 1);
+}
+
+int	ft_token_quote(t_data *a, int i)
+{
+	int	j;
+
+	j = 0;
+	while (a->cmd_line[i + j] && a->cmd_line[i + j] != '\'')
+		j++;
+	if (!a->cmd_line[i + j])
+	{
+		a->exit_status = 258;
+		ft_free(a, 1);
+		write(2, "syntax error, missing '\n", 24);
 		return (-1);
 	}
 	ft_new_token(a, 'W', ft_substr(a->cmd_line, i, j), 1);
