@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 18:47:29 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/13 11:07:38 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/15 21:32:17 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ void	ft_new_token_sub(t_data *a, char c, char *s, int i);
 void	ft_free_token(t_token *p);
 void	ft_free(t_data *a, int i);
 void	ft_free_env(t_env *env);
-
+void	ft_token_separate(t_data *a);
+int		ft_token_redir(t_data *a, int i);
+int		ft_token_quote(t_data *a, int i);
 
 
 
