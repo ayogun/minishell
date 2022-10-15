@@ -6,7 +6,7 @@
 /*   By: yogun <yogun@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:16:32 by yogun             #+#    #+#             */
-/*   Updated: 2022/10/15 21:28:59 by yogun            ###   ########.fr       */
+/*   Updated: 2022/10/15 21:30:50 by yogun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,32 @@ int	ft_token_quote(t_data *a, int i)
 	}
 	ft_new_token(a, 'W', ft_substr(a->cmd_line, i, j), 1);
 	return (i + j + 1);
+}
+
+int	ft_token_redir(t_data *a, int i)
+{
+	ft_token_separate(a);
+	if (a->cmd_line[i] == '<')
+	{
+		i++;
+		if (a->cmd_line[i] == '<')
+		{
+			i++;
+			ft_new_token(a, 'H', NULL, 0);
+		}
+		else
+			ft_new_token(a, '<', NULL, 0);
+	}
+	else
+	{
+		i++;
+		if (a->cmd_line[i] == '>')
+		{
+			i++;
+			ft_new_token(a, 'A', NULL, 0);
+		}
+		else
+			ft_new_token(a, '>', NULL, 0);
+	}
+	return (i);
 }
